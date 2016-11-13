@@ -1,0 +1,150 @@
+int B_enkoder;
+int C_enkoder;
+int D1;
+int D2;
+bool out;
+int trigger;
+int e;
+int Pk;
+int u;
+int speed;
+int PD;
+int es;
+float d;
+float x;
+task main()
+{
+  SetSensorLight(IN_3);
+  SetSensorLight(IN_2);
+
+  x = 180;
+  d = 43.2;
+  PD = 6;
+  Pk = 2;
+  speed =75;
+  Pk = 2;
+  while(true)
+  {
+    ResetRotationCount(OUT_B);
+    ResetRotationCount(OUT_C);
+    B_enkoder = 0;
+    C_enkoder = 0;
+    es = 0;
+    out = true;
+    Wait(10);
+    while(out)
+    {
+      D1 = Sensor(IN_3);
+      D2 = Sensor(IN_2);
+      e = D2-D1;
+      u = e*Pk+PD*(e-es);
+      OnFwd(OUT_B,u+speed);
+      OnFwd(OUT_C,-u+speed);
+      es = e;
+      if ((MotorRotationCount(OUT_B)+MotorRotationCount(OUT_C))/2*(d*PI/360) >= (1070*PI)/2)
+      {
+        out = false;
+      }
+    }
+    Off(OUT_BC);
+    
+    NumOut(0,LCD_LINE1,(MotorRotationCount(OUT_B)+MotorRotationCount(OUT_C))/2);
+    
+    Wait(50);
+    
+    if (MotorRotationCount(OUT_B)-B_enkoder>MotorRotationCount(OUT_C)-C_enkoder)
+    {
+      RotateMotorEx(OUT_BC, speed, x/d*90, -100, true, true);
+      trigger = 1;
+    }
+    else
+    {
+      RotateMotorEx(OUT_BC, speed, x/d*90, 100, true, true);
+      trigger = 2;
+    }
+
+    OnRev(OUT_B,15);
+    OnRev(OUT_C,15);
+    while(Sensor(IN_3) >= 46 && Sensor(IN_2) >= 44)
+    {
+      if (Sensor(IN_3)<=44)
+      {
+        Off(OUT_C);
+      }
+      if(Sensor(IN_2)<=40.5)
+      {
+        Off(OUT_B);
+      }
+    }
+    Off(OUT_BC);
+    Wait(50);
+    OnFwdSyncEx(OUT_BC, speed, 0,RESET_NONE);
+    while(Sensor(IN_3) >= 44 && Sensor(IN_2) >= 40.5)
+    {
+    }
+    Off(OUT_BC);
+    Wait(50);
+    RotateMotorEx(OUT_BC, speed, 200, 0, true, true);
+    if (trigger == 1)
+    {
+      RotateMotorEx(OUT_BC, speed, x/d*90, 100, true, true);
+      trigger = 2 ;
+    }
+    else
+    {
+      RotateMotorEx(OUT_BC, speed, x/d*90, -100, true, true);
+      trigger = 1;
+    }
+    //ResetRotationCount(OUT_B);
+    //ResetRotationCount(OUT_C);
+    B_enkoder = MotorRotationCount(OUT_B);
+    C_enkoder = MotorRotationCount(OUT_C);
+
+
+
+  }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

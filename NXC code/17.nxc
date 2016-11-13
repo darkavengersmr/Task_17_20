@@ -1,0 +1,202 @@
+float x;
+float d;
+int speed;
+int es;
+int D2;
+int D1;
+int e;
+int u;
+int PD;
+int Pk;
+
+task main()
+{
+  SetSensorLight(IN_3);
+  SetSensorLight(IN_2);
+  SetSensorLowspeed(IN_4);
+  x = 180;
+  d = 43.2;
+  speed = 70;
+  es = 0;
+  Pk = 2;
+  PD = 4;
+  OnFwdSync(OUT_BC, 20, -100);
+  while(SensorUS(IN_4) >= 50)
+  {
+  }
+  while (SensorUS(IN_4) <= 50)
+  {
+  }
+  Off(OUT_BC);
+  RotateMotorEx(OUT_BC, speed, x/d*85, -  100, true, true);
+  Wait(50);
+  OnFwdSyncEx(OUT_BC, 50, 0,RESET_NONE);
+  while(Sensor(IN_3) >= 44 && Sensor(IN_2) >= 40.5)
+  {
+  }
+  Off(OUT_BC);
+  Wait(50);
+  RotateMotorEx( OUT_BC , speed , 200 , 0 , true , true );
+  RotateMotorEx(OUT_BC , speed , x / d * 75, -100, true , true );
+  for(int i=0; i<4; i++)
+  {
+    while(SensorUS(IN_4) >=10)
+    {
+      D1 = Sensor(IN_3);
+      D2 = Sensor(IN_2);
+      e = D2-D1;
+      u = e*Pk+PD*(e-es);
+      OnFwd(OUT_B,u+speed);
+      OnFwd(OUT_C,-u+speed);
+      es = e;
+    }
+    Off(OUT_BC);
+    RotateMotorEx(OUT_BC , speed , x / d * 95, -100, true , true );
+    Wait(50);
+    RotateMotorEx( OUT_BC , speed , 1100 , 0 , true , true );
+    Wait(50);
+    RotateMotorEx( OUT_BC , -1*speed , 1100 , 0 , true , true );
+    RotateMotorEx(OUT_BC , speed , x / d * 87, 100, true , true );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
